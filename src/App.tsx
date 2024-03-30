@@ -1,5 +1,6 @@
+import { useReducer, useMemo } from "react";
 import { menuItems } from "./data/db"
-import useOrder from "./hooks/useOrder"
+import { orderReducer, initialState } from "./reducers/order-reducer";
 import MenuItem from "./components/MenuItem"
 import OrderContent from "./components/OrderContent";
 import OrderTotals from "./components/OrderTotals";
@@ -7,7 +8,14 @@ import TipForm from "./components/TipForm";
 
 function App() {
 
-    const { order, tip, setTip, isEmpty, addOrderItem, removeOrderItem, placeOrder } = useOrder();
+    //const { order, tip, setTip, isEmpty, addOrderItem, removeOrderItem, placeOrder } = useOrder();
+    const [state, dispatch] = useReducer(orderReducer, initialState)
+    const { order, tip } = state
+    /* useEffect(() => {
+        if(isEmpty) setTip(0)
+    }, [order]) */
+
+    const isEmpty = useMemo(() => order.length <= 0, [order])
 
 	return (
 		<>
@@ -24,7 +32,7 @@ function App() {
                             <MenuItem 
                                 key={menuItem.id} 
                                 menuItem={menuItem}
-                                addOrderItem={addOrderItem}
+                                dispatch={dispatch}
                             />
                         ))}
                     </div>
@@ -36,11 +44,14 @@ function App() {
                     {!isEmpty ? (
                         <>
                             <OrderContent
-                            order={order}
-                            removeOrderItem={removeOrderItem}
+                                order={order}
+                                dispatch={dispatch}
                             />
 
-                            <TipForm tip={tip} setTip={setTip}/>
+                            <TipForm 
+                                tip={tip} 
+                                dispatch={dispatch}
+                            />
                         </>
                     ) : (
                         <p className="text-center">La Orden está Vacía</p>
@@ -51,7 +62,7 @@ function App() {
                         order={order}
                         tip={tip}
                         isEmpty={isEmpty}
-                        placeOrder={placeOrder}
+                        dispatch={dispatch}
                     />
                 </div>
             </main>

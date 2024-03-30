@@ -1,12 +1,14 @@
+import { Dispatch } from "react"
 import { cashify } from "../helpers"
 import { OrderItem } from "../types"
+import { OrderActions } from "../reducers/order-reducer"
 
 type OrderContentProps = {
     order: OrderItem[],
-    removeOrderItem: (id: OrderItem['id']) => void
+    dispatch: Dispatch<OrderActions>
 }
 
-function OrderContent({order, removeOrderItem} : OrderContentProps) {
+function OrderContent({order, dispatch} : OrderContentProps) {
     return (
         <>
 
@@ -19,7 +21,7 @@ function OrderContent({order, removeOrderItem} : OrderContentProps) {
                                 <p className="font-black">Cantidad: {orderItem.quantity} - {cashify(orderItem.price * orderItem.quantity)}</p>
                             </div>
 
-                            <button onClick={() => removeOrderItem(orderItem.id)} className="bg-red-600 h-8 w-8 rounded-full text-white font-black">
+                            <button onClick={() => dispatch({ type: "remove-orderItem", payload: { id: orderItem.id } })} className="bg-red-600 h-8 w-8 rounded-full text-white font-black">
                                 X
                             </button>
                         </div>

@@ -1,3 +1,5 @@
+import { Dispatch } from "react"
+import { OrderActions } from "../reducers/order-reducer"
 
 
 const tipOptions = [
@@ -20,10 +22,10 @@ const tipOptions = [
 
 type TipFormProps = {
     tip: number
-    setTip: React.Dispatch<React.SetStateAction<number>>
+    dispatch: Dispatch<OrderActions>
 }
 
-function TipForm({tip, setTip} : TipFormProps) {
+function TipForm({tip, dispatch} : TipFormProps) {
     
     return (
         <div className="space-y-5">
@@ -32,7 +34,7 @@ function TipForm({tip, setTip} : TipFormProps) {
             <form className="flex justify-around items-center">
                 {tipOptions.map(tipOption => (
                     <div key={tipOption.id} className="w-24 h-10 relative">
-                        <input className="peer block absolute top-0 left-0 right-0 bottom-0 opacity-[0.01] z-[100] " onChange={(e) => setTip(+e.target.value)} type="radio" id={tipOption.id} name="tip" value={tipOption.value} checked={tipOption.value == tip}/>
+                        <input className="peer block absolute top-0 left-0 right-0 bottom-0 opacity-[0.01] z-[100] " onChange={(e) => dispatch({ type: "add-tip", payload: { tip: +e.target.value } })} type="radio" id={tipOption.id} name="tip" value={tipOption.value} checked={tipOption.value == tip}/>
                         <label className="block absolute top-0.5 left-0.5 z-[90] px-5 py-2 rounded-lg peer-checked:bg-teal-200 border-2 border-teal-300 cursor-pointer hover:bg-teal-100 transition-all" htmlFor={tipOption.id}>{tipOption.label}</label>
                     </div>
                 ))}

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react"
+import { useState } from "react"
 import type { MenuItem, OrderItem } from "../types";
 
 function useOrder(){
@@ -6,13 +6,7 @@ function useOrder(){
     const [order, setOrder] = useState<OrderItem[]>([]);
     const [tip, setTip] = useState(0);
 
-    useEffect(() => {
-        if(isEmpty) setTip(0)
-    }, [order])
-
     const MAX_ITEMS : number = 5
-
-    const isEmpty = useMemo(() => order.length <= 0, [order])
 
     const addOrderItem = (menuItem: MenuItem) =>{
 
@@ -47,7 +41,6 @@ function useOrder(){
         order,
         tip,
         setTip,
-        isEmpty,
         addOrderItem,
         removeOrderItem,
         placeOrder,
